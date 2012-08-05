@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+
+<!--
+Copyright (c) 2012, Danny Fritz <dannyfritz@gmail.com>
+Free Attribution License (FAL) 1.0
+-->
+<html lang='en' ng-app='waew'>
+<head>
+	<meta name='viewport' content='initial-scale=1.0, user-scalable=no' />
+	<meta charset='utf-8'>
+
+	<title>Where Are We Eatin'?</title>
+
+	<link href='bootstrap/css/bootstrap.css' rel='stylesheet'>
+	<link href='bootstrap/css/bootstrap-responsive.css' rel='stylesheet'>
+	<link rel='stylesheet' href='css/main.css'>
+
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular-resource.min.js'></script>
+	<script type='text/javascript' src='http://maps.googleapis.com/maps/api/js?key=AIzaSyC77NtN3yq0a3YYkPrgW6qInh-8sNup4ac&sensor=true&libraries=places'></script>
+</head>
+<body>
+	<div class='container' ng-controller='WAWECtrl'>
+		<header class='hero-unit'>
+			<h1>Where are we eatin'?</h1>
+			<p>Because you guys just can’t decide on anything.</p>
+		</header>
+
+		<div id='Decision' class='well form-search'>
+				<button id='decisionBtn' ng-click='makeDecision()' class='btn btn-large btn-primary'>Make Decision</button>
+			<h1>
+				{{decision.title}}
+			</h1>
+		</div>
+
+		<div id='Places' class='well'>
+			<h2>Places <a ng-click='refreshPlaces()' class='btn'><i class='icon-refresh icon-large'></i></a></h2>
+			<div>
+				<form class='form-search' ng-submit='addPlace({{placeName}})'>
+					<input type='text' class='search-query' ng-model='placeName'
+						placeholder='Add a place manually.'>
+					<button type='submit' class='btn'>Add</button>
+				</form>
+				<div ng-repeat='place in places'>
+					<a class='btn btn-mini btn-danger' ng-click='removePlace(place)'>
+						<i class='icon-minus icon-white'></i>
+					</a>
+					{{place.title}}
+				</div>
+			</div>
+		</div>
+
+		<div id='Map' class='well'>
+			<form class='form-search' ng-submit='searchPlace()'>
+				<input type='text' class='search-query' ng-model='searchQuery'
+					placeholder='What would you like to eat?'>
+				<button type='submit' class='btn'>Search</button>
+			</form>
+			<div id='map_canvas'></div>
+		</div>
+	</div>
+
+	<script src='js/map.js'></script>
+	<script src='js/main.js'></script>
+
+</body>
+</html>
