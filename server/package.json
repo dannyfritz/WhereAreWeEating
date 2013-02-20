@@ -1,7 +1,7 @@
 {
   "name": "WhereAreWeEatin",
   "preferGlobal": "false",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Pindie Studios <PindieStudios@gmail.com>",
   "description": "A simple REST interface for http://WhereAreWeEat.in",
   "contributors": [ 
@@ -11,12 +11,10 @@
     } 
   ],
   "scripts": {
-    //"start": "node ./bin/http-server",
-    //"test": "vows --spec --isolate"
   },
   "repository": {
-    //"type": "git",
-    //"url": "https://github.com/nodejitsu/http-server.git"
+    "type": "git",
+    "url": "https://github.com/dannyfritz/WhereAreWeEating.git"
   },
   "keywords": [
     "WhereAreWeEatin",
@@ -24,13 +22,10 @@
     "Indecisive Party Smasher"
   ],
   "dependencies" : {
-    "mongoose"   :  "2.7.x",
-    "express" :  "3.0.x"
+    "mongoose"   : "2.7.x",
+    "express" : "3.0.x"
   },
-  "devDependencies": {
-    //"vows"    :  "0.5.x",
-    //"request" :  "2.1.x"
-  },
+  "devDependencies": {},
   "license": "FAL 1.0",
   "engine": {
     "node": ">=0.8"

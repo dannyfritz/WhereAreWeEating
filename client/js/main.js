@@ -5,14 +5,14 @@ Free Attribution License (FAL) 1.0
 
 var waew = angular.module('waew', ['ngResource'])
 	.factory('Place', function ($resource) {
-		return $resource('apiv1/place/:title', {}, {
+		return $resource('api/place/:title', {}, {
 			getAll: {method:'GET', params:{}, isArray:true},
 			add: {method:'POST', params:{}},
 			remove: {method:'DELETE', params:{}}
 		})
 	})
 	.factory('Decide', function ($resource) {
-		return $resource('apiv1/decide', {}, {
+		return $resource('api/decide', {}, {
 			get: {method:'POST', params:{}}
 		});
 	});

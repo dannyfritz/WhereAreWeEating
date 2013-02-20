@@ -3,22 +3,16 @@ Copyright (c) 2012, Danny Fritz <dannyfritz@gmail.com>
 Free Attribution License (FAL) 1.0
 ------------------------------------------------------------------------------*/
 
-var application_root = __dirname
+var util = require("util")
+	, application_root = __dirname
 	, express = require("express")
 	, path = require("path")
 	, mongoose = require('mongoose')
 	, port = process.argv[2] ? process.argv[2] : 8890;
 
-console.log("port: ", port);
-
-var app = express.createServer();
-
-// Database
-
+// Mongoose
 mongoose.connect('mongodb://localhost/WhereAreWeEatin');
-
 var Schema = mongoose.Schema;
-
 var PlaceSchema = new Schema({
 		title: {type: String, unique: true, trim: true, required: true}
 	, categories: [String]
@@ -27,36 +21,25 @@ var PlaceSchema = new Schema({
 	, longitude: {type: Number, min: -180, max: 180}
 	, timesVisited: [Date]
 });
-
 var Place = mongoose.model('Place', PlaceSchema);
 
-// Config
-
-var allowCrossDomain = function(req, res, next) {
-	res.header('Access-Control-Allow-Credentials', true);
-	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:3030');
-	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-	res.header('Access-Control-Allow-Headers', 'Content-Type');
-
-	next();
-}
-
+// Express
+var app = express();
 app.configure(function () {
+	app.use(function(req, res, next) {
+		console.log('%s %s', req.method, req.url);
+		next();
+	});
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(allowCrossDomain);
-	app.use(express.static(path.join(application_root, "../client")));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 // REST
-
-app.post('/apiv1/place', function(req, res) {
+app.post('/:base/api/place', function(req, res) {
 	var place;
-
 	console.log("POST: ");
 	console.log(req.body);
-
 	place = new Place({
 			title: req.body.title
 		, latitude: req.body.latitude
@@ -70,11 +53,9 @@ app.post('/apiv1/place', function(req, res) {
 			return console.log(err);
 		}
 	});
-
 	return res.send(place);
 })
-
-app.get('/apiv1/place', function (req, res) {
+app.get('/:base/api/place', function (req, res) {
 	console.log("GET: ");
 	console.log(req.body);
 	return Place.find(function (err, places) {
@@ -85,8 +66,7 @@ app.get('/apiv1/place', function (req, res) {
 		}
 	});
 });
-
-app.get('/apiv1/place/:title', function (req, res) {
+app.get('/:base/api/place/:title', function (req, res) {
 	console.log("GET: ");
 	console.log(req.body);
 	var searchFields = {
@@ -100,8 +80,7 @@ app.get('/apiv1/place/:title', function (req, res) {
 		}
 	});
 });
-
-app.delete('/apiv1/place/:title', function (req, res) {
+app.delete('/:base/api/place/:title', function (req, res) {
 	console.log("DELETE: ");
 	console.log(req.params.title);
 	var searchFields = {
@@ -116,11 +95,9 @@ app.delete('/apiv1/place/:title', function (req, res) {
 		}
 	});
 });
-
-app.post('/apiv1/decide', function(req, res) {
+app.post('/:base/api/decide', function(req, res) {
 	console.log("POST: ");
 	console.log(req.body);
-
 	Place.count({}, function(err, count) {
 		var callback = function(err, places) {
 			if (!err) {
@@ -133,13 +110,7 @@ app.post('/apiv1/decide', function(req, res) {
 		};
 		Place.find({}, callback)
 	});
-
 })
 
-app.get('/apiversions', function (req, res) {
-	res.send('API\'s available:\napiv1');
-});
-
 // Launch server
-
 app.listen(port);
