@@ -23,7 +23,7 @@
   ],
   "dependencies" : {
     "mongoose"   : "2.7.x",
-    "express" : "3.0.x"
+    "express" : "4.17.x"
   },
   "devDependencies": {},
   "license": "FAL 1.0",
